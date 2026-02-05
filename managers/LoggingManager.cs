@@ -25,10 +25,7 @@ public class LoggingManager
     public static async Task LogMessages(IEnumerable<IMessage> messages)
     {
         List<ProcessedMessage> processedMessages = new();
-        foreach (var message in messages)
-        {
-            processedMessages.Add(CreateMessage(message));
-        }
+        processedMessages.AddRange(CreateMessages(messages));
         var old = GetMessages(Path);
         old.AddRange(processedMessages);
         await File.WriteAllTextAsync(Path, JsonSerializer.Serialize(processedMessages, Options));
@@ -75,6 +72,17 @@ public class LoggingManager
             AuthorUsername = message.Author.Username,
             MessageContent = message.CleanContent,
         };
+    }
+
+    private static List<ProcessedMessage> CreateMessages(IEnumerable<IMessage> messages)
+    {
+        List<ProcessedMessage> finalMessages = new();
+        foreach (IMessage message in messages)
+        {
+            finalMessages.Add(CreateMessage(message));
+        }
+
+        return finalMessages;
     }
 
     private static List<ProcessedMessage> GetMessages(string path)
