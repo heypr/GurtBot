@@ -48,8 +48,10 @@ public class LoggingManager
         
         foreach (ProcessedMessage message in messages)
         {
+            if (message.MessageContent.Length == 0) continue;
             if (message.MessageContent.StartsWith("https://"))
             {
+                messageList.Clear();
                 messageList.Add(message.MessageContent);
                 break;
             }
