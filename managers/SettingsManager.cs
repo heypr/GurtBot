@@ -4,7 +4,7 @@ public class SettingsManager
 {
     private const string SettingsPath = "../../../settings.json";
     private static int _maxWords = 20;
-    private static int chanceToTalk = 5;
+    private static int _chanceToTalk = 5;
 
     public static void LoadSettings()
     {
@@ -15,7 +15,7 @@ public class SettingsManager
             if (settings != null)
             {
                 _maxWords = settings.MaxWords;
-                chanceToTalk = settings.ChanceToTalk;
+                _chanceToTalk = settings.ChanceToTalk;
             }
         }
     }
@@ -23,8 +23,8 @@ public class SettingsManager
     public static async Task SaveSettings(int newMaxWords, int newChance)
     {
         _maxWords = newMaxWords;
-        chanceToTalk = newChance;
-        var data = new SettingsData { MaxWords = _maxWords, ChanceToTalk = chanceToTalk };
+        _chanceToTalk = newChance;
+        var data = new SettingsData { MaxWords = _maxWords, ChanceToTalk = _chanceToTalk };
         await File.WriteAllTextAsync(SettingsPath, JsonConvert.SerializeObject(data, Formatting.Indented));
     }
 
@@ -35,7 +35,7 @@ public class SettingsManager
 
     public static int GetChanceToTalk()
     {
-        return chanceToTalk;
+        return _chanceToTalk;
     }
 
     private class SettingsData
